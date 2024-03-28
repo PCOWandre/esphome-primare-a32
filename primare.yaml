@@ -1,0 +1,47 @@
+esphome:
+  name: primare-switch
+  friendly_name: primare-switch
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: ""
+
+ota:
+  password: ""
+
+wifi:
+  ssid: ""
+  password: ""
+  use_address: x.x.x.x
+
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Primare-Switcher Fallback Hotspot"
+    password: ""
+
+uart:
+  baud_rate: 4800
+  tx_pin: GPIO16
+  rx_pin: GPIO17
+
+switch:
+  - platform: template
+    id: primare_amp
+    name: "Primare A32 Power"
+    turn_on_action:
+    - uart.write: [0x02, 0x57, 0x81, 0x02, 0x10, 0x03]
+    turn_off_action:
+    - uart.write: [0x02, 0x57, 0x81, 0x00, 0x10, 0x03]
+    optimistic: true
+
+
